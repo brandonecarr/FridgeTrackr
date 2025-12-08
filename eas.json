@@ -10,7 +10,14 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "ios": {
+        "buildConfiguration": "Release",
+        "config": {
+          "suppress_xcode_output": false
+        }
+      }
+    }
   },
   "submit": {
     "production": {}
