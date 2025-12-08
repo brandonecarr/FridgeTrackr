@@ -12,7 +12,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.brandonecarr.fridgetrackr",
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"],
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera to scan barcodes.",
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to add item images."
       }
@@ -27,11 +26,7 @@
         "android.permission.SCHEDULE_EXACT_ALARM"
       ]
     },
-    "notification": {
-      "color": "#3B82F6",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Food Tracker"
-    },
+
     "web": {
       "bundler": "metro",
       "output": "static",
@@ -51,13 +46,7 @@
           "photosPermission": "Allow $(PRODUCT_NAME) to access your photos to add item images."
         }
       ],
-      [
-        "expo-notifications",
-        {
-          "icon": "./assets/images/icon.png",
-          "color": "#3B82F6"
-        }
-      ],
+
       [
         "expo-splash-screen",
         {
