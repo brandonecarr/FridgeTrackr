@@ -18,7 +18,8 @@
       "ios": {
         "buildConfiguration": "Release",
         "config": {
-          "suppress_xcode_output": false
+          "suppress_xcode_output": false,
+          "disable_xcpretty": false
         }
       }
     }
