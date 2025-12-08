@@ -1,0 +1,28 @@
+{
+  "cli": {
+    "version": ">= 13.2.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "RCT_NEW_ARCH_ENABLED": "1"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "RCT_NEW_ARCH_ENABLED": "1"
+      }
+    },
+    "production": {
+      "env": {
+        "RCT_NEW_ARCH_ENABLED": "1"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
