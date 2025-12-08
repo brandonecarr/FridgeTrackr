@@ -1,12 +1,10 @@
-const { withDangerousMod, withPlugins } = require("@expo/config-plugins");
+const { withDangerousMod } = require("@expo/config-plugins");
 const fs = require("fs");
 const path = require("path");
 
 /**
  * This plugin patches Folly to fix the 'folly/coro/Coroutine.h' file not found error
  * that occurs with Xcode 16+ and react-native-reanimated.
- * 
- * It works by patching the Podfile post-install to modify Folly's build settings.
  */
 const withFollyFix = (config) => {
   return withDangerousMod(config, [
@@ -19,45 +17,38 @@ const withFollyFix = (config) => {
         
         // Check if our fix is already applied
         if (!podfile.includes("FOLLY_HAVE_COROUTINES")) {
-          // Find the post_install block and add our fix
-          const postInstallFix = `
+          // The fix code to insert inside post_install
+          const follyFixCode = `
     # Fix for Folly coroutines with Xcode 16+
     installer.pods_project.targets.each do |target|
-      if target.name == 'RCT-Folly' || target.name == 'folly' || target.name.start_with?('Folly')
-        target.build_configurations.each do |config|
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_HAVE_COROUTINES=0'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
+      if target.name == 'RCT-Folly' || target.name == 'folly' || target.name.start_with?('Folly') || target.name == 'RNReanimated'
+        target.build_configurations.each do |build_config|
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_HAVE_COROUTINES=0'
+          build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
         end
       end
-      # Also fix for RNReanimated which uses Folly
-      if target.name == 'RNReanimated'
-        target.build_configurations.each do |config|
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_HAVE_COROUTINES=0'
-          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'FOLLY_CFG_NO_COROUTINES=1'
-        end
-      end
-    end
-`;
-          
-          // Insert before the last 'end' of post_install
-          if (podfile.includes("post_install do |installer|")) {
-            // Find the post_install block and add our code before the final end
+    end`;
+
+          // Look for the post_install block with react_native_post_install
+          if (podfile.includes("react_native_post_install(installer)")) {
+            // Insert after react_native_post_install
             podfile = podfile.replace(
-              /(post_install do \|installer\|[\s\S]*?)(^end)/m,
-              `$1${postInstallFix}\n$2`
+              /react_native_post_install\(installer\)/,
+              `react_native_post_install(installer)${follyFixCode}`
             );
-          } else {
-            // Add a new post_install block at the end
-            podfile += `
-post_install do |installer|
-${postInstallFix}
-end
-`;
+          } else if (podfile.includes("post_install do |installer|")) {
+            // Insert right after post_install do |installer|
+            podfile = podfile.replace(
+              /post_install do \|installer\|/,
+              `post_install do |installer|${follyFixCode}`
+            );
           }
           
           fs.writeFileSync(podfilePath, podfile);
+          console.log("[withFollyFix] Successfully patched Podfile with Folly coroutine fix");
+        } else {
+          console.log("[withFollyFix] Folly fix already applied, skipping");
         }
       }
       
