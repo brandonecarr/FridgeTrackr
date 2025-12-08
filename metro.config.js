@@ -9,3 +9,5 @@ config.resolver = config.resolver || {};
 config.resolver.blacklistRE = /node_modules\/(@emnapi\/runtime\/dist|@tybys\/wasm-util\/lib\/cjs\/wasi)/;
 
 module.exports = withNativeWind(config, { input: "./global.css" });
+
+// Note: The babel plugin alias for react-native-worklets needs to be in babel.config.js
