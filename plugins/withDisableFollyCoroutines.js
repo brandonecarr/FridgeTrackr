@@ -23,15 +23,16 @@ function withDisableFollyCoroutines(config) {
       } else {
         // Create the header directly if source doesn't exist
         const headerContent = `// Force disable Folly coroutines
+#ifndef FOLLY_CORO_DISABLED_BY_EXPO
+#define FOLLY_CORO_DISABLED_BY_EXPO 1
 #ifdef FOLLY_HAS_COROUTINES
 #undef FOLLY_HAS_COROUTINES
 #endif
 #define FOLLY_HAS_COROUTINES 0
-#ifdef __cpp_impl_coroutine
-#undef __cpp_impl_coroutine
+#ifdef FOLLY_CFG_NO_COROUTINES
+#undef FOLLY_CFG_NO_COROUTINES
 #endif
-#ifdef __cpp_lib_coroutine
-#undef __cpp_lib_coroutine
+#define FOLLY_CFG_NO_COROUTINES 1
 #endif
 `;
         fs.writeFileSync(destHeader, headerContent);
@@ -51,12 +52,13 @@ function withDisableFollyCoroutines(config) {
       build_config.build_settings['OTHER_CFLAGS'] = "#{existing_flags} -include \\"#{folly_disable_header}\\""
       
       existing_cxx_flags = build_config.build_settings['OTHER_CPLUSPLUSFLAGS'] || '$(inherited)'
-      build_config.build_settings['OTHER_CPLUSPLUSFLAGS'] = "#{existing_cxx_flags} -include \\"#{folly_disable_header}\\" -DFOLLY_HAS_COROUTINES=0"
+      build_config.build_settings['OTHER_CPLUSPLUSFLAGS'] = "#{existing_cxx_flags} -include \\"#{folly_disable_header}\\" -DFOLLY_HAS_COROUTINES=0 -DFOLLY_CFG_NO_COROUTINES=1"
       
       # Also add to preprocessor definitions
       existing_defs = build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)']
       existing_defs = [existing_defs] if existing_defs.is_a?(String)
       existing_defs << 'FOLLY_HAS_COROUTINES=0' unless existing_defs.include?('FOLLY_HAS_COROUTINES=0')
+      existing_defs << 'FOLLY_CFG_NO_COROUTINES=1' unless existing_defs.include?('FOLLY_CFG_NO_COROUTINES=1')
       build_config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = existing_defs
     end
   end
