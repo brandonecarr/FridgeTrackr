@@ -17,7 +17,7 @@
       "node": "22.12.0",
       "ios": {
         "buildConfiguration": "Release",
-        "image": "macos-ventura-13.6-xcode-15.2",
+        "image": "macos-sonoma-14.5-xcode-15.4",
         "resourceClass": "m-medium"
       }
     }
