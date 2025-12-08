@@ -14,6 +14,7 @@
       "cache": {
         "disabled": true
       },
+      "node": "22.12.0",
       "ios": {
         "buildConfiguration": "Release",
         "config": {
