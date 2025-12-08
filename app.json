@@ -13,7 +13,8 @@
       "bundleIdentifier": "com.brandonecarr.fridgetrackr",
       "infoPlist": {
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to access your camera to scan barcodes.",
-        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to add item images."
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos to add item images.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
