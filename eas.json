@@ -19,9 +19,6 @@
         "buildConfiguration": "Release",
         "config": {
           "suppress_xcode_output": false
-        },
-        "env": {
-          "RCT_NEW_ARCH_ENABLED": "1"
         }
       }
     }
