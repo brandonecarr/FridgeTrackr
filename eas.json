@@ -11,6 +11,9 @@
       "distribution": "internal"
     },
     "production": {
+      "cache": {
+        "disabled": true
+      },
       "ios": {
         "buildConfiguration": "Release",
         "config": {
