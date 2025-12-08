@@ -17,7 +17,7 @@
       "node": "22.12.0",
       "ios": {
         "buildConfiguration": "Release",
-        "image": "macos-sequoia-15.4-xcode-16.3",
+        "image": "latest",
         "resourceClass": "m-medium"
       }
     }
