@@ -33,6 +33,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "./plugins/withDisableFollyCoroutines.js",
       "expo-router",
       [
         "expo-camera",
