@@ -17,7 +17,15 @@
       "node": "22.12.0",
       "ios": {
         "buildConfiguration": "Release",
-        "image": "macos-sonoma-14.5-xcode-15.4",
+        "image": "latest",
+        "resourceClass": "m-medium"
+      }
+    },
+    "production-stable": {
+      "extends": "production",
+      "ios": {
+        "buildConfiguration": "Release",
+        "image": "macos-sequoia-15.4-xcode-16.3",
         "resourceClass": "m-medium"
       }
     }
