@@ -15,7 +15,7 @@
       "cache": {
         "disabled": true
       },
-      "node": "22.12.0",
+      "node": "20.19.1",
       "ios": {
         "buildConfiguration": "Release",
         "image": "macos-sequoia-15.4-xcode-16.3",
