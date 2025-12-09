@@ -20,6 +20,9 @@
         "buildConfiguration": "Release",
         "image": "macos-sequoia-15.4-xcode-16.3",
         "resourceClass": "m-medium"
+      },
+      "hooks": {
+        "preInstall": "./eas-hooks/eas-build-pre-install.sh"
       }
     },
     "production-stable": {
